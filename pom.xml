@@ -5,7 +5,7 @@
 	<artifactId>spnego</artifactId>
 	<packaging>jar</packaging>
 	<name>Sourceforge SPNEGO</name>
-	<version>7.0</version>
+	<version>7.0-with-chromium-fix</version>
 	<description>Integrated Windows Authentication in Java</description>
 	<url>http://spnego.sourceforge.net</url>
 	<licenses>

@@ -73,7 +73,16 @@ public final class SpnegoProvider {
     static final GSSManager MANAGER = GSSManager.getInstance(); // NOPMD
 
     /** GSS-API mechanism "1.3.6.1.5.5.2". */
-    static final Oid SPNEGO_OID = SpnegoProvider.getOid(); // NOPMD
+    static final Oid SPNEGO_OID = SpnegoProvider.getSpnegoOid(); // NOPMD
+	/** GSS-API mechanism "1.2.840.113554.1.2.2". */
+    static final Oid KERBEROS_V5_OID = SpnegoProvider.getKerberosV5Oid(); // NOPMD
+	/**
+	 * Note: The MIT Kerberos V5 mechanism OID is added for compatibility with
+	 *		 Chromium-based browsers on POSIX OSes. On these OSes, Chromium erroneously
+	 *		 responds to an SPNEGO request with a GSS-API MIT Kerberos V5 mechanism
+	 *		 answer (instead of a MIT Kerberos V5 token inside an SPNEGO mechanism answer).
+	 */
+    static final Oid[] SUPPORTED_OIDS = new Oid[]{SPNEGO_OID, KERBEROS_V5_OID}; // NOPMD
 
     /*
      * This is a utility class (not a Singleton).
@@ -171,7 +180,7 @@ public final class SpnegoProvider {
                     return MANAGER.createCredential(
                         null
                         , GSSCredential.DEFAULT_LIFETIME
-                        , SpnegoProvider.SPNEGO_OID
+                        , SpnegoProvider.SUPPORTED_OIDS
                         , GSSCredential.INITIATE_ONLY);
                 } 
             };
@@ -228,19 +237,35 @@ public final class SpnegoProvider {
             throw new UnsupportedOperationException("Negotiate or Basic Only:" + header);
         }
     }
-    
+
     /**
      * Returns the Universal Object Identifier representation of 
      * the SPNEGO mechanism.
      * 
      * @return Object Identifier of the GSS-API mechanism
      */
-    private static Oid getOid() {
+    private static Oid getSpnegoOid() {
         Oid oid = null;
         try {
             oid = new Oid("1.3.6.1.5.5.2");
         } catch (GSSException gsse) {
             LOGGER.log(Level.SEVERE, "Unable to create OID 1.3.6.1.5.5.2 !", gsse);
+        }
+        return oid;
+    }
+
+    /**
+     * Returns the Universal Object Identifier representation of
+     * the MIT Kerberos V5 mechanism.
+	 *
+     * @return Object Identifier of the GSS-API mechanism
+     */
+    private static Oid getKerberosV5Oid() {
+        Oid oid = null;
+        try {
+            oid = new Oid("1.2.840.113554.1.2.2");
+        } catch (GSSException gsse) {
+            LOGGER.log(Level.SEVERE, "Unable to create OID 1.2.840.113554.1.2.2 !", gsse);
         }
         return oid;
     }
@@ -261,7 +286,7 @@ public final class SpnegoProvider {
                     return MANAGER.createCredential(
                         null
                         , GSSCredential.INDEFINITE_LIFETIME
-                        , SpnegoProvider.SPNEGO_OID
+                        , SpnegoProvider.SUPPORTED_OIDS
                         , GSSCredential.ACCEPT_ONLY);
                 } 
             };
