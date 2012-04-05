@@ -32,5 +32,17 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
+
+	<distributionManagement>
+		<repository>
+			<id>github-eleotlecram-repo</id>
+			<url>file://${user.home}/GitRepositories/maven-repo/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>github-eleotlecram-snapshot-repo</id>
+			<url>file://${user.home}/GitRepositories/maven-repo/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 </project>
