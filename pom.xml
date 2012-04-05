@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sourceforge.spnego</groupId>
-	<artifactId>spnego</artifactId>
+	<artifactId>spnego-pac</artifactId>
 	<packaging>jar</packaging>
 	<name>Sourceforge SPNEGO</name>
 	<version>7.0-with-chromium-fix</version>
@@ -28,6 +28,18 @@
 			<version>2.5</version>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>org.jaaslounge</groupId>
+			<artifactId>jaaslounge-decoding</artifactId>
+			<version>1.1.0</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,5 +56,12 @@
 			<url>file://${user.home}/GitRepositories/maven-repo/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>github-eleotlecram-releases</id>
+			<url>https://github.com/EleotleCram/maven-repo/raw/master/releases</url>
+		</repository>
+	</repositories>
 
 </project>

@@ -40,86 +40,97 @@ import org.ietf.jgss.GSSCredential;
  */
 public final class SpnegoPrincipal implements Principal {
 
-    private final transient KerberosPrincipal kerberosPrincipal;
-    
-    private final transient GSSCredential delegatedCred;
-    
-    /**
-     * Constructs a SpnegoPrincipal from the provided String input.
-     * 
-     * @param name the principal name
-     */
-    public SpnegoPrincipal(final String name) {
-        this.kerberosPrincipal = new KerberosPrincipal(name);
-        this.delegatedCred = null;
-    }
-    
-    /**
-     * Constructs a SpnegoPrincipal from the provided String input 
-     * and name type input.
-     * 
-     * @param name the principal name
-     * @param nameType the name type of the principal
-     */
-    public SpnegoPrincipal(final String name, final int nameType) {
-        this.kerberosPrincipal = new KerberosPrincipal(name, nameType);
-        this.delegatedCred = null;
-    }
+	private final transient KerberosPrincipal kerberosPrincipal;
 
-    /**
-     * Constructs a SpnegoPrincipal from the provided String input 
-     * and name type input.
-     * 
-     * @param name the principal name
-     * @param nameType the name type of the principal
-     * @param delegCred this principal's delegated credential (if any)
-     */
-    public SpnegoPrincipal(final String name, final int nameType
-        , final GSSCredential delegCred) {
-        
-        this.kerberosPrincipal = new KerberosPrincipal(name, nameType);
-        this.delegatedCred = delegCred;
-    }
-    
-    /**
-     * Returns this Principal's delegated credential or null.
-     * 
-     * @return Principal's delegated credential or null.
-     */
-    public GSSCredential getDelegatedCredential() {
-        return this.delegatedCred;
-    }
-    
-    @Override
-    public String getName() {
-        return this.kerberosPrincipal.getName();
-    }
-    
-    /**
-     * Returns the name type of the KerberosPrincipal.
-     * 
-     * @return name type of the KerberosPrincipal
-     */
-    public int getNameType() {
-        return this.kerberosPrincipal.getNameType();
-    }
-    
-    /**
-     * Returns the realm component of this Kerberos principal.
-     * 
-     * @return realm component of this Kerberos principal
-     */
-    public String getRealm() {
-        return this.kerberosPrincipal.getRealm();
-    }
-    
-    @Override
-    public int hashCode() {
-        return this.kerberosPrincipal.hashCode();
-    }
-    
-    @Override
-    public String toString() {
-        return this.kerberosPrincipal.toString();
-    }
+	private final transient GSSCredential delegatedCred;
+	private final SpnegoLogonInfo logonInfo;
+
+	/**
+	 * Constructs a SpnegoPrincipal from the provided String input.
+	 *
+	 * @param name the principal name
+	 */
+	public SpnegoPrincipal(final String name) {
+		this(name, KerberosPrincipal.KRB_NT_PRINCIPAL);
+	}
+
+	/**
+	 * Constructs a SpnegoPrincipal from the provided String input
+	 * and name type input.
+	 *
+	 * @param name the principal name
+	 * @param nameType the name type of the principal
+	 */
+	public SpnegoPrincipal(final String name, final int nameType) {
+		this(name, nameType, null, null);
+	}
+
+	/**
+	 * Constructs a SpnegoPrincipal from the provided String input
+	 * and name type input.
+	 *
+	 * @param name the principal name
+	 * @param nameType the name type of the principal
+	 * @param delegCred this principal's delegated credential (if any)
+	 */
+	public SpnegoPrincipal(final String name, final int nameType
+			, final GSSCredential delegCred
+			, final SpnegoLogonInfo logonInfo) {
+
+		this.kerberosPrincipal = new KerberosPrincipal(name, nameType);
+		this.delegatedCred = delegCred;
+		this.logonInfo = logonInfo;
+	}
+
+	/**
+	 * Returns this Principal's delegated credential or null.
+	 *
+	 * @return Principal's delegated credential or null.
+	 */
+	public GSSCredential getDelegatedCredential() {
+		return this.delegatedCred;
+	}
+
+	@Override
+	public String getName() {
+		return this.kerberosPrincipal.getName();
+	}
+
+	/**
+	 * Returns the name type of the KerberosPrincipal.
+	 *
+	 * @return name type of the KerberosPrincipal
+	 */
+	public int getNameType() {
+		return this.kerberosPrincipal.getNameType();
+	}
+
+	/**
+	 * Returns the realm component of this Kerberos principal.
+	 *
+	 * @return realm component of this Kerberos principal
+	 */
+	public String getRealm() {
+		return this.kerberosPrincipal.getRealm();
+	}
+
+	/**
+	 * Returns the logon info from the PAC authorization data (if available,
+	 * such as, from a Kerberos Ticket that was issued by Active Directory).
+	 *
+	 * @return logon info of this Kerberos principal, or null, if no such info is available for this principal
+	 */
+	public SpnegoLogonInfo getLogonInfo() {
+		return this.logonInfo;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.kerberosPrincipal.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return this.kerberosPrincipal.toString();
+	}
 }
