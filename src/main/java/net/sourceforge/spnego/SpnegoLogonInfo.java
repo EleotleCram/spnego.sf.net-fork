@@ -164,7 +164,7 @@ public class SpnegoLogonInfo {
 
 		for(int i = 0; i < 4; i++) {
 			res = res.shiftLeft(8);
-			res = res.add(BigInteger.valueOf(pacData[4+i]));
+			res = res.add(BigInteger.valueOf(pacData[4+i] & 0xFF));
 		}
 
 		return res;
@@ -176,7 +176,7 @@ public class SpnegoLogonInfo {
 
 		for(int i = 3; i >= 0; i--) {
 			res = res.shiftLeft(8);
-			res = res.add(BigInteger.valueOf(pacData[offset+i]));
+			res = res.add(BigInteger.valueOf(pacData[offset+i] & 0xFF));
 		}
 
 		return res;
